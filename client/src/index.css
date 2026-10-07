@@ -109,3 +109,9 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+body 
+{ margin: 0; font-family: system-ui, sans-serif; background: #f3f4f6; }
+.app { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 16px; box-sizing: border-box; 
+}
+
