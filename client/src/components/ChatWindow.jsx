@@ -48,11 +48,14 @@ export default function ChatWindow() {
   const userSays = (text) => setMessages((m) => [...m, { from: 'user', text }]);
 
   const showProducts = async () => {
-    const list = await api.getProducts();
-    setProducts(list);
-    say('Here are our products:\n' + list.map((p) => `• ${p.name} – ${p.description}`).join('\n'));
-    say('Pick one to see its plans:', list.map((p) => ({ label: p.name, value: `product:${p.id}` })));
-  };
+  const list = await api.getProducts();
+  setProducts(list);
+  say('Here are our products:\n' + list.map((p) => `• ${p.name} – ${p.description}`).join('\n'));
+  say('Pick one to see its plans, or go back:', [
+    ...list.map((p) => ({ label: p.name, value: `product:${p.id}` })),
+    { label: 'No thanks, go back', value: 'back_to_menu' },
+  ]);
+};
 
   const showCustomer = (data) => {
     setCustomer(data.customer);
@@ -92,9 +95,20 @@ export default function ChatWindow() {
         setCustomer(null);
         setForm({});
         say('Okay! Are you an existing customer or a new one?', START_OPTIONS);
-            } else if (v === 'list') {
+        } else if (v === 'list') {
         await showProducts();
-      } else if (v.startsWith('existing_found:')) {
+        } else if (v === 'back_to_menu') {
+        if (customer) {
+        say('No problem. What would you like to do next?', [
+      { label: 'View products', value: 'list' },
+      { label: 'Start over', value: 'restart' },
+    ]);
+  } else {
+    say('No problem. Are you an existing customer or a new one?', START_OPTIONS);
+    setStep('start');
+  }
+}
+      else if (v.startsWith('existing_found:')) {
         say('One moment, checking your account...');
         const phone = v.split(':')[1];
         const data = await api.lookupCustomer(phone);
@@ -106,10 +120,14 @@ export default function ChatWindow() {
       } else if (v.startsWith('product:')) {
         const p = products.find((x) => x.id === Number(v.split(':')[1]));
         say(
-          `${p.name} plans:`,
-          p.plans.map((pl) => ({ label: `${pl.name} – ₹${Number(pl.price)}`, value: `plan:${pl.id}` }))
-        );
-      } else if (v.startsWith('plan:')) {
+        `${p.name} plans:`,
+       [
+      ...p.plans.map((pl) => ({ label: `${pl.name} – ₹${Number(pl.price)}`, value: `plan:${pl.id}` })),
+      { label: 'Go back', value: 'list' },
+      ]
+      );
+      }
+      else if (v.startsWith('plan:')) {
         const sub = await api.subscribe(customer.id, Number(v.split(':')[1]));
         say(`Done! Your subscription is active. It renews on ${fmt(sub.renewal_date)}.`, [
         { label: 'Add another plan', value: 'list' },
