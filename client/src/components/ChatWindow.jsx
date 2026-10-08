@@ -112,8 +112,9 @@ export default function ChatWindow() {
       } else if (v.startsWith('plan:')) {
         const sub = await api.subscribe(customer.id, Number(v.split(':')[1]));
         say(`Done! Your subscription is active. It renews on ${fmt(sub.renewal_date)}.`, [
-          { label: 'Start over', value: 'restart' },
-        ]);
+        { label: 'Add another plan', value: 'list' },
+        { label: 'Start over', value: 'restart' },
+          ]);
       }
     } catch (e) {
       say(
