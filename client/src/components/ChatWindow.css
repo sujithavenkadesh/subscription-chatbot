@@ -1,14 +1,143 @@
-.chat { width: 100%; max-width: 420px; height: 640px; max-height: 90vh; display: flex; flex-direction: column; background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.12); overflow: hidden; }
-.chat-header { background: #2563eb; color: #fff; padding: 14px 16px; font-weight: 600; }
-.chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
-.msg { max-width: 80%; padding: 10px 12px; border-radius: 12px; white-space: pre-line; line-height: 1.4; font-size: 14px; }
-.msg.bot { background: #f1f5f9; color: #111; align-self: flex-start; }
-.msg.user { background: #2563eb; color: #fff; align-self: flex-end; }
-.options { display: flex; flex-wrap: wrap; gap: 8px; }
-.options button { border: 1px solid #2563eb; background: #fff; color: #2563eb; padding: 8px 12px; border-radius: 999px; cursor: pointer; font-size: 13px; }
-.options button:hover { background: #eff6ff; }
-.chat-input { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #e5e7eb; }
-.chat-input input { flex: 1; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px; }
-.chat-input button { background: #2563eb; color: #fff; border: 0; padding: 0 16px; border-radius: 8px; cursor: pointer; }
-.chat-input button:disabled, .chat-input input:disabled, .options button:disabled { opacity: .5; cursor: not-allowed; }
-.msg { text-align: left; }
+.chat {
+  width: 100%;
+  max-width: 420px;
+  height: 640px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(37, 99, 235, 0.18), 0 2px 8px rgba(0,0,0,.06);
+  overflow: hidden;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.chat-header {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  padding: 18px 20px;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.chat-header::before {
+  content: "💬";
+  font-size: 18px;
+}
+
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f8fafc;
+}
+
+.msg {
+  max-width: 82%;
+  padding: 11px 14px;
+  border-radius: 14px;
+  white-space: pre-line;
+  line-height: 1.5;
+  font-size: 14px;
+  text-align: left;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04);
+}
+
+.msg.bot {
+  background: #fff;
+  color: #1e293b;
+  align-self: flex-start;
+  border: 1px solid #e5e7eb;
+  border-bottom-left-radius: 4px;
+}
+
+.msg.user {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.options button {
+  border: 1.5px solid #2563eb;
+  background: #fff;
+  color: #2563eb;
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.options button:hover:not(:disabled) {
+  background: #eff6ff;
+  transform: translateY(-1px);
+}
+
+.options button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.chat-input {
+  display: flex;
+  gap: 8px;
+  padding: 14px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #fff;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 11px 14px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 10px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.chat-input input:focus {
+  border-color: #2563eb;
+}
+
+.chat-input button {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  border: 0;
+  padding: 0 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.chat-input button:disabled,
+.chat-input input:disabled,
+.options button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* scrollbar polish */
+.chat-body::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
