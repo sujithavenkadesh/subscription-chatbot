@@ -92,8 +92,17 @@ export default function ChatWindow() {
         setCustomer(null);
         setForm({});
         say('Okay! Are you an existing customer or a new one?', START_OPTIONS);
-      } else if (v === 'list') {
+            } else if (v === 'list') {
         await showProducts();
+      } else if (v.startsWith('existing_found:')) {
+        say('One moment, checking your account...');
+        const phone = v.split(':')[1];
+        const data = await api.lookupCustomer(phone);
+        setStep('menu');
+        showCustomer(data);
+      } else if (v === 'retry_phone') {
+        setStep('new_phone');
+        say('No problem. What is your 10-digit phone number?');
       } else if (v.startsWith('product:')) {
         const p = products.find((x) => x.id === Number(v.split(':')[1]));
         say(
