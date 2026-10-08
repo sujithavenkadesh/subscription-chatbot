@@ -41,12 +41,15 @@ export default function ChatWindow() {
     endRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, options]);
 
-  const say = (text, opts) => {
-    setMessages((m) => [...m, { from: 'bot', text }]);
-    if (opts) setOptions(opts);
-  };
-  const userSays = (text) => setMessages((m) => [...m, { from: 'user', text }]);
+  const timeNow = () =>
+  new Date().toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
 
+const say = (text, opts) => {
+  setMessages((m) => [...m, { from: 'bot', text, time: timeNow() }]);
+  if (opts) setOptions(opts);
+};
+const userSays = (text) =>
+  setMessages((m) => [...m, { from: 'user', text, time: timeNow() }]);
 
  const PASTEL_STOPS = [
   [253, 242, 248], // pink    #fdf2f8
@@ -250,10 +253,19 @@ const handleScroll = (e) => {
 
   return (
     <div className="chat">
-      <div className="chat-header">Subscription Assistant</div>
+      <div className="chat-header">
+      <div className="header-title">Subscription Assistant</div>
+      <div className="header-status">
+      <span className="status-dot"></span> Online now
+     </div>
+     </div>
       <div className="chat-body" onScroll={handleScroll}>
         {messages.map((m, i) => (
-          <div key={i} className={`msg ${m.from}`}>{m.text}</div>
+        <div key={i} className={`msg-wrap ${m.from}`}>
+        <div className="msg-name">{m.from === 'bot' ? 'Assistant' : 'You'}</div>
+        <div className={`msg ${m.from}`}>{m.text}</div>
+        <div className="msg-time">{m.time}</div>
+        </div>
         ))}
         <div className="options">
           {options.map((o) => (
