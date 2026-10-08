@@ -50,8 +50,8 @@ export default function ChatWindow() {
 
   const handleScroll = (e) => {
   const el = e.currentTarget;
-  const max = el.scrollHeight - el.clientHeight;
-  const pct = max > 0 ? el.scrollTop / max : 0;
+  // Reach full color shift within ~150px of scrolling, instead of the whole scroll range
+  const pct = Math.min(el.scrollTop / 150, 1);
   el.style.setProperty('--scroll-pct', pct.toFixed(3));
 };
   const showProducts = async () => {
