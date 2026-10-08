@@ -147,19 +147,31 @@ export default function ChatWindow() {
         setForm({ name: text });
         setStep('new_phone');
         say(`Nice to meet you, ${text}! What is your 10-digit phone number?`);
-      } else if (step === 'new_phone') {
-        if (!/^\d{10}$/.test(text)) {
-          say('Please enter a valid 10-digit phone number.');
-          return;
-        }
-        setForm((f) => ({ ...f, phone: text }));
-        setStep('new_email');
-        say('What is your email address?');
-      } else if (step === 'new_email') {
-        if (!text.includes('@')) {
-          say('Please enter a valid email address.');
-          return;
-        }
+     } else if (step === 'new_phone') 
+      {
+       if (!/^\d{10}$/.test(text)) {
+       say('Please enter a valid 10-digit phone number.');
+       return;
+      }
+      try {
+      await api.lookupCustomer(text);
+      say("This number is already registered with us.", [
+      { label: 'Continue as existing customer', value: `existing_found:${text}` },
+      { label: 'Use a different number', value: 'retry_phone' },
+    ]);
+      return;
+     }   catch (err) {
+      if (err.message !== 'Customer not found') throw err;
+     }
+     setForm((f) => ({ ...f, phone: text }));
+     setStep('new_email');
+     say('What is your email address?');
+      } 
+       else if (step === 'new_email') {
+       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
+       say('Please enter a valid email address (e.g. name@example.com).');
+       return;
+      }
         setForm((f) => ({ ...f, email: text }));
         setStep('new_address');
         say('What is your delivery address?');
