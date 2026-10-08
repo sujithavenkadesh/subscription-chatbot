@@ -48,24 +48,22 @@ export default function ChatWindow() {
   const userSays = (text) => setMessages((m) => [...m, { from: 'user', text }]);
 
 
-  const PASTEL_STOPS = [
-  [253, 242, 248], // pink   #fdf2f8
+ const PASTEL_STOPS = [
+  [253, 242, 248], // pink    #fdf2f8
   [237, 233, 254], // lavender #ede9fe
   [224, 242, 254], // sky blue #e0f2fe
-  [220, 252, 231], // mint   #dcfce7
-  [254, 249, 195], // pale yellow #fef9c3
 ];
 
 const handleScroll = (e) => {
   const el = e.currentTarget;
   const stepSize = 150; // px of scroll per color stage
-  const totalStages = PASTEL_STOPS.length - 1;
-  const raw = Math.min(el.scrollTop / stepSize, totalStages);
-  const idx = Math.min(Math.floor(raw), totalStages - 1);
+  const n = PASTEL_STOPS.length;
+  const raw = (el.scrollTop / stepSize) % n;
+  const idx = Math.floor(raw);
   const t = raw - idx;
 
   const [r1, g1, b1] = PASTEL_STOPS[idx];
-  const [r2, g2, b2] = PASTEL_STOPS[idx + 1];
+  const [r2, g2, b2] = PASTEL_STOPS[(idx + 1) % n];
   const r = Math.round(r1 + (r2 - r1) * t);
   const g = Math.round(g1 + (g2 - g1) * t);
   const b = Math.round(b1 + (b2 - b1) * t);
