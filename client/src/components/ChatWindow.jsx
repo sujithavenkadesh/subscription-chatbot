@@ -47,6 +47,13 @@ export default function ChatWindow() {
   };
   const userSays = (text) => setMessages((m) => [...m, { from: 'user', text }]);
 
+
+  const handleScroll = (e) => {
+  const el = e.currentTarget;
+  const max = el.scrollHeight - el.clientHeight;
+  const pct = max > 0 ? el.scrollTop / max : 0;
+  el.style.setProperty('--scroll-pct', pct.toFixed(3));
+};
   const showProducts = async () => {
   const list = await api.getProducts();
   setProducts(list);
@@ -228,7 +235,7 @@ export default function ChatWindow() {
   return (
     <div className="chat">
       <div className="chat-header">Subscription Assistant</div>
-      <div className="chat-body">
+      <div className="chat-body" onScroll={handleScroll}>
         {messages.map((m, i) => (
           <div key={i} className={`msg ${m.from}`}>{m.text}</div>
         ))}

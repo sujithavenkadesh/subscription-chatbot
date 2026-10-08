@@ -36,7 +36,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background: #faf9ff;
+  --scroll-pct: 0;
+  background: color-mix(
+    in srgb,
+    #fdf2f8 calc((1 - var(--scroll-pct)) * 100%),
+    #e0f2fe calc(var(--scroll-pct) * 100%)
+  );
+  transition: background 0.15s ease-out;
 }
 
 .msg {
