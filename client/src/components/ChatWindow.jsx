@@ -136,14 +136,15 @@ export default function ChatWindow() {
     setBusy(true);
     try {
       if (step === 'existing_phone') {
-        if (!/^\d{10}$/.test(text)) {
-          say('Please enter a valid 10-digit phone number.');
-          return;
-        }
+         if (!/^\d{10}$/.test(text)) {
+         say('Please enter a valid 10-digit phone number.');
+         return;
+         }
+        say('One moment, checking your account...');
         try {
-          const data = await api.lookupCustomer(text);
-          setStep('menu');
-          showCustomer(data);
+        const data = await api.lookupCustomer(text);
+        setStep('menu');
+        showCustomer(data);
         } catch (err) {
           if (err.message === 'Customer not found') {
             say("I couldn't find that number.", [
